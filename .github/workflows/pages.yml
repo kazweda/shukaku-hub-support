@@ -1,0 +1,74 @@
+name: Deploy Shukaku Hub Support Site (GitHub Pages)
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - INDEX.md
+      - PRIVACY_POLICY.md
+      - CNAME
+      - ci_scripts/build_privacy_policy_site.py
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install markdown dependency
+        run: pip install markdown==3.10.2
+
+      - name: Build promotion page
+        run: |
+          python ci_scripts/build_privacy_policy_site.py \
+            --input INDEX.md \
+            --output _site/index.html
+
+      - name: Build privacy policy page
+        run: |
+          python ci_scripts/build_privacy_policy_site.py \
+            --input PRIVACY_POLICY.md \
+            --output _site/privacy-policy/index.html
+
+      - name: Copy CNAME
+        run: cp CNAME _site/CNAME
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
