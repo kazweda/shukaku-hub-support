@@ -60,7 +60,7 @@ Shukaku Hub（収穫ハブ）は、個人事業や小規模農家様向けの注
 
 ---
 
-[プライバシーポリシー](privacy-policy/)
+[プライバシーポリシー](privacy-policy/) | [English](en/)
 
 ---
 
