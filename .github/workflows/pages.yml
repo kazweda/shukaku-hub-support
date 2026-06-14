@@ -6,7 +6,9 @@ on:
       - main
     paths:
       - INDEX.md
+      - INDEX_EN.md
       - PRIVACY_POLICY.md
+      - PRIVACY_POLICY_EN.md
       - CNAME
       - ci_scripts/build_privacy_policy_site.py
       - .github/workflows/pages.yml
@@ -39,17 +41,23 @@ jobs:
       - name: Install markdown dependency
         run: pip install markdown==3.10.2
 
-      - name: Build promotion page
+      - name: Build promotion pages
         run: |
           python ci_scripts/build_privacy_policy_site.py \
             --input INDEX.md \
             --output _site/index.html
+          python ci_scripts/build_privacy_policy_site.py \
+            --input INDEX_EN.md \
+            --output _site/en/index.html
 
-      - name: Build privacy policy page
+      - name: Build privacy policy pages
         run: |
           python ci_scripts/build_privacy_policy_site.py \
             --input PRIVACY_POLICY.md \
             --output _site/privacy-policy/index.html
+          python ci_scripts/build_privacy_policy_site.py \
+            --input PRIVACY_POLICY_EN.md \
+            --output _site/privacy-policy/en/index.html
 
       - name: Copy CNAME
         run: cp CNAME _site/CNAME
