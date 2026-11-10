@@ -13,6 +13,14 @@ Supports order management, product management, customer management, and invoicin
 
 ---
 
+## News
+
+### November 10, 2026: Please update to version 1.0.6
+
+We have released version 1.0.6, which includes an important security update that protects the app's network connections. Please update the app to the latest version from the App Store.
+
+---
+
 ## About the App
 
 Shukaku Hub is an order management app designed for sole proprietors and small-scale farmers. It lets you manage customers, products, and orders in one place, and generate invoice PDFs.
